@@ -283,6 +283,7 @@ DiariFASV <- DiariFASV %>%
         Marge,
         Producte
     )
+DiariFASV <- subset(DiariFASV, Data < "2016-01-01")
 
 #--------------------------Despeses-----------------------------------
 #Càrega del fitxer de Despeses
@@ -547,8 +548,8 @@ DiariGlobal <- Diari %>%
 
 #Canviem els marges dels projectes MOTIONFCC i CRISTALLGO
 DiariGlobal <- DiariGlobal %>%
-    filter (Projecte != "CRISTALLGO") %>%
-    filter (Projecte != "MOTIONFCC")
+    filter ((Projecte != "CRISTALLGO")|(is.na(Projecte))) %>%
+    filter ((Projecte != "MOTIONFCC")|(is.na(Projecte)))
 
 DiariGlobal <- DiariGlobal %>%   #MargeIncorrecte
     add_row (Data = c("2016-07-15", "2016-08-15", "2016-09-16", "2016-10-16", "2016-11-16", "2016-12-15", "2017-01-15", "2017-02-15", "2017-03-15", "2017-04-15", "2017-05-15", "2017-06-15", "2017-07-15", "2017-08-15", "2017-09-15", "2017-10-15", "2017-11-15", "2017-12-15","2018-01-15","2018-02-15","2018-03-15","2018-04-15","2018-05-15","2018-06-15","2018-07-15","2018-08-15","2018-09-15","2018-10-15","2018-11-15","2018-12-15","2019-01-15"),
@@ -767,7 +768,7 @@ ggsave("Grafiques/ROI20172018.pdf", width = 18, height = 18, units = "cm")
 #------------------------------ALTRES--------------------------------
 
 #Comparativa vendes BASE vs BASEMN
-DiariBASE = subset(Diari, NomJerarquia == "BASE")
+DiariBASE = subset(Diari, (NomJerarquia == "BASE" | NomJerarquia == "BASE MN"))
 DiariBASE$VendesBASE = 0
 DiariBASE$VendesBASEMN = 0
 DiariBASE$MargeBASE = 0
@@ -789,9 +790,9 @@ g = ggplot(arrange(DiariSumatBASE, Data), aes(x = Data)) +
 	theme(axis.text = element_text(size = 8)) + 
 	labs(y = "Marge / Vendes", x = "Temps") +
 	geom_line(aes(y = cumsum(VendaB)), colour = "Blue") +  
-	geom_line(aes(y = cumsum(VendaBMN)), colour = "Red") +
-	geom_line(aes(y = cumsum(MargeB)), colour = "Green") +  
-	geom_line(aes(y = cumsum(MargeBMN)), colour = "Yellow")
+	geom_line(aes(y = cumsum(VendaBMN)), colour = "Green") +
+	geom_line(aes(y = cumsum(MargeB)), colour = "Blue4") +  
+	geom_line(aes(y = cumsum(MargeBMN)), colour = "Green4")
 	
 print(g)
 ggsave("Grafiques/ComparativaBASEvsBASEMN.pdf", width = 18, height = 18, units = "cm")
