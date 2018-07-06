@@ -109,7 +109,7 @@ Grafica9 = function (ProjList){
             geom_bar(aes(y = TotalMarge),stat = "identity") +
             geom_line(aes(y = cumsum(-Despesa)), colour = "Blue3", alpha = 0.4) +
             geom_line(aes(y = cumsum(Previsio)), colour = "Red", alpha = 0.4) +
-            ylim(-170000, 90000)
+            ylim(-170000, 100000)
         print(g)
         ggsave(paste("Grafiques/FluxeCaixa", NomProjecte, ".pdf"), width = 18, height = 18, units = "cm")
     }
@@ -158,7 +158,7 @@ GraficaSumaPropjectes = function (ProjList, Fitxer){
 #--------------------------Diari--------------------------------------
 #Càrrega del fitxer Diari de facturació. Primer de SAP
 Diari <- read_csv(
-	"Dades/Diari160101180531.csv", 
+	"Dades/Diari160101180630.csv", 
 	locale = locale(encoding = "Latin1", grouping_mark = ",", decimal_mark = "."),
 	col_types = cols(
 		Material = col_integer(),
@@ -304,7 +304,7 @@ DespesesPRESAP <- read_csv("Dades/DespesesPRESAP.csv",
   	)
 )
 	
-DespesesSAP <- read_tsv("Dades/DespesesSAP180531.csv", 
+DespesesSAP <- read_tsv("Dades/DespesesSAP180630.csv", 
 	locale = locale(encoding = "Latin1", grouping_mark = ".", decimal_mark = ","),
 	skip = 5,
 	col_types = cols(
@@ -689,7 +689,7 @@ NomsProjectes = c("CAPMOD", "RB3 TALLAFOC", "GOBIOK", "ADAPMEMDC", "CRISTALLGO",
 Grafica9(NomsProjectes)
 GraficaSumaPropjectes(NomsProjectes,"3")
 
-NomsProjectes = c("RMARLC", "aa", "aa", "aa", "aa", "aa", "aa", "aa", "aa") #ROI / PRE
+NomsProjectes = c("RMARLC", "M8", "VERSUS - PQCOM", "aa", "aa", "aa", "aa", "aa", "aa") #ROI / PRE
 Grafica9(NomsProjectes)
 
 
@@ -737,8 +737,8 @@ print(g)
 ggsave("Grafiques/AgilitatProjectes.pdf", width = 18, height = 18, units = "cm")
 
 #------------------------------ROI--------------------------------
-ResultatROI <- CalculaROI(ResumROI, ymd("2018-06-01"), TRUE, TRUE) #ROI a dia d'avui
-ResultatPressupostROI <- CalculaROI(ResumPressupostROI, ymd("2018-06-01"), TRUE, TRUE) #ROI segons pressupost
+ResultatROI <- CalculaROI(ResumROI, ymd("2018-07-01"), TRUE, TRUE) #ROI a dia d'avui
+ResultatPressupostROI <- CalculaROI(ResumPressupostROI, ymd("2018-07-01"), TRUE, TRUE) #ROI segons pressupost
 
 ResultatROI <- CalculaROI(ResumROI, ymd("2019-01-01"), TRUE, TRUE) #ROI a 1 any
 ROI <- tibble(
