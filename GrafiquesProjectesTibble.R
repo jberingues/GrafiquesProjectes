@@ -157,40 +157,77 @@ GraficaSumaPropjectes = function (ProjList, Fitxer){
 #-------------------CÀRREGA DE DADES i NETEJA-------------------------
 #--------------------------Diari--------------------------------------
 #Càrrega del fitxer Diari de facturació. Primer de SAP
-Diari <- read_csv(
-	"Dades/Diari160101180630.csv", 
-	locale = locale(encoding = "Latin1", grouping_mark = ",", decimal_mark = "."),
+Diari_old <- read_csv(
+	"Dades/Diari160101171231.csv", 
+	locale = locale(encoding = "UTF-8", grouping_mark = ",", decimal_mark = "."),
 	col_types = cols(
 		Material = col_integer(),
 		Sector = col_integer(),
   		`Fecha factura` = col_date("%d/%m/%Y"),
   		`Clase de factura` = col_character(),
   		Factura = col_double(),
-  		`Nombre 1` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Clave de pas` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Nmero de personal` = col_integer(),
-  		`Nombre del empleado o candidato` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+  		`Nombre 1` = col_character(),
+  		`Clave de país` = col_character(),
+  		`Número de personal` = col_integer(),
+  		`Nombre del empleado o candidato` = col_character(),
   		`Grupo de clientes` = col_integer(),
-  		`Nombre Comercial` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+  		`Nombre Comercial` = col_character(),
   		`Cantidad facturada` = col_number(),
-  		`Un.medida venta` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+  		`Un.medida venta` = col_character(),
   		Neto. = col_number(),
   		`Valor neto` = col_number(),
   		`Costes internos` = col_number(),
   		`Importe del impuesto` = col_number(),
-  		`Moneda del documento` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
+  		`Moneda del documento` = col_character(),
   		`Margen %` = col_number(),
   		Margen = col_number(),
   		`Grupo principal` = col_integer(),
-  		`Denominacin` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Pas receptor` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Jerarqua productos` = col_integer(),
-  		`Denominacin_1` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Elemento PEP` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Tipo material` = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`Denominacin_2` = col_character()
+  		`Denominación` = col_character(),
+  		`País receptor` = col_character(),
+  		`Jerarquía productos` = col_integer(),
+  		`Denominación_1` = col_character(),
+  		`Elemento PEP` = col_character(),
+  		`Tipo material` = col_character(),
+  		`Denominación_2` = col_character()
 	)
 )
+
+Diari <- read_csv(
+    "Dades/Diari180101180731.csv", 
+    locale = locale(encoding = "UTF-8", grouping_mark = ",", decimal_mark = "."),
+    col_types = cols(
+        Material = col_integer(),
+        Sector = col_integer(),
+        `Fecha factura` = col_date("%d/%m/%Y"),
+        `Clase de factura` = col_character(),
+        Factura = col_double(),
+        `Nombre 1` = col_character(),
+        `Clave de país` = col_character(),
+        `Número de personal` = col_integer(),
+        `Nombre del empleado o candidato` = col_character(),
+        `Grupo de clientes` = col_integer(),
+        `Nombre Comercial` = col_character(),
+        `Cantidad facturada` = col_number(),
+        `Un.medida venta` = col_character(),
+        Neto. = col_number(),
+        `Valor neto` = col_number(),
+        `Costes internos` = col_number(),
+        `Importe del impuesto` = col_number(),
+        `Moneda del documento` = col_character(),
+        `Margen %` = col_number(),
+        Margen = col_number(),
+        `Grupo principal` = col_integer(),
+        `Denominación` = col_character(),
+        `País receptor` = col_character(),
+        `Jerarquía productos` = col_integer(),
+        `Denominación_1` = col_character(),
+        `Elemento PEP` = col_character(),
+        `Tipo material` = col_character(),
+        `Denominación_2` = col_character()
+    )
+)
+
+Diari <- bind_rows(Diari_old, Diari)
 
 #Neteja de les dades: Eliminar les que tenen un NA al número de factura(els totals)
 Diari <- Diari %>% drop_na(Factura)
@@ -200,8 +237,8 @@ Diari <- rename(Diari,
 	Data = `Fecha factura`,
   	ClaseFact = `Clase de factura`,
   	Client = `Nombre 1`,
-  	Pais = `Clave de pas`,
-  	NumVenedor = `Nmero de personal`,
+  	Pais = `Clave de país`,
+  	NumVenedor = `Número de personal`,
   	Venedor = `Nombre del empleado o candidato`,
   	GrupClient = `Grupo de clientes`,
   	NomProducteAb = `Nombre Comercial`,
@@ -215,13 +252,13 @@ Diari <- rename(Diari,
   	MargePerc = `Margen %`,
   	Marge = Margen,
   	Grup = `Grupo principal`,
-  	NomGrup = `Denominacin`,
-  	PaisR = `Pas receptor`,
-  	Jerarquia = `Jerarqua productos`,
-  	NomJerarquia = `Denominacin_1`,
+  	NomGrup = `Denominación`,
+  	PaisR = `País receptor`,
+  	Jerarquia = `Jerarquía productos`,
+  	NomJerarquia = `Denominación_1`,
   	Projecte = `Elemento PEP`,
   	TipusMat = `Tipo material`,
-  	NomProducte = `Denominacin_2`)
+  	NomProducte = `Denominación_2`)
 
 Diari <- Diari %>%
     select(
