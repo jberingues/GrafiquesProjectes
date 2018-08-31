@@ -341,19 +341,35 @@ DespesesPRESAP <- read_csv("Dades/DespesesPRESAP.csv",
   	)
 )
 	
-DespesesSAP <- read_tsv("Dades/DespesesSAP180630.csv", 
-	locale = locale(encoding = "Latin1", grouping_mark = ".", decimal_mark = ","),
-	skip = 5,
-	col_types = cols(
-  		Elem.PEP = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE),
-  		`DenominaciÃ³n` = col_character(),
-  		Fe.contab. = col_date("%d.%m.%Y"),
-  		`AÃ±o` = col_integer(),
-  		`DescripciÃ³n` = col_character(),
-  		`Val/MScCO` = col_number(),
-  		MSoCO = col_factor(levels = NULL, ordered = FALSE, include_na = FALSE)
-  	)
+DespesesSAP_old <- read_tsv("Dades/DespesesSAP160101171231.csv", 
+                        locale = locale(encoding = "Latin1", grouping_mark = ".", decimal_mark = ","),
+                        skip = 5,
+                        col_types = cols(
+                            Elem.PEP = col_character(),
+                            `DenominaciÃ³n` = col_character(),
+                            Fe.contab. = col_date("%d.%m.%Y"),
+                            `AÃ±o` = col_integer(),
+                            `DescripciÃ³n` = col_character(),
+                            `Val/MScCO` = col_number(),
+                            MSoCO = col_character()
+                        )
 )
+
+DespesesSAP <- read_tsv("Dades/DespesesSAP180101180731.csv", 
+                            locale = locale(encoding = "Latin1", grouping_mark = ".", decimal_mark = ","),
+                            skip = 5,
+                            col_types = cols(
+                                Elem.PEP = col_character(),
+                                `DenominaciÃ³n` = col_character(),
+                                Fe.contab. = col_date("%d.%m.%Y"),
+                                `AÃ±o` = col_integer(),
+                                `DescripciÃ³n` = col_character(),
+                                `Val/MScCO` = col_number(),
+                                MSoCO = col_character()
+                            )
+)
+
+DespesesSAP <- bind_rows(DespesesSAP, DespesesSAP_old)
 
 DespesesSAP <- rename(DespesesSAP,
 	Projecte = Elem.PEP,
@@ -774,8 +790,8 @@ print(g)
 ggsave("Grafiques/AgilitatProjectes.pdf", width = 18, height = 18, units = "cm")
 
 #------------------------------ROI--------------------------------
-ResultatROI <- CalculaROI(ResumROI, ymd("2018-07-01"), TRUE, TRUE) #ROI a dia d'avui
-ResultatPressupostROI <- CalculaROI(ResumPressupostROI, ymd("2018-07-01"), TRUE, TRUE) #ROI segons pressupost
+ResultatROI <- CalculaROI(ResumROI, ymd("2018-06-01"), TRUE, TRUE) #ROI a dia d'avui
+ResultatPressupostROI <- CalculaROI(ResumPressupostROI, ymd("2018-06-01"), TRUE, TRUE) #ROI segons pressupost
 
 ResultatROI <- CalculaROI(ResumROI, ymd("2019-01-01"), TRUE, TRUE) #ROI a 1 any
 ROI <- tibble(
